@@ -1,0 +1,127 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #2f019e;
+}
+.container {
+  width: 100%;
+  margin: 0 auto;
+}
+@media (max-width: 767px) {
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 600px;
+  }
+}
+.todo-container {
+  background-color: #f6f6f6;
+}
+.todo-container .add-task {
+  padding: 15px;
+  background-color: #009688;
+  position: relative;
+}
+.todo-container .add-task input {
+  width: calc(100% - 15px);
+  padding: 10px 15px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: white;
+  font-size: 20px;
+  border-radius: 0 20px 20px 0;
+  caret-color: #673ab7;
+}
+.todo-container .add-task input:focus {
+  outline: none;
+}
+.todo-container .add-task .add {
+  display: inline-block;
+  position: absolute;
+  height: 43px;
+  width: 43px;
+  background-color: white;
+  right: 30px;
+  top: 15px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: #009688;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.todo-container .add-task .add:hover {
+  transform: rotate(90deg);
+}
+.todo-container .tasks-content {
+  padding: 15px;
+}
+.todo-container .tasks-content .no-tasks-msg {
+  color: #777;
+  font-size: 15px;
+}
+.todo-container .tasks-content > span {
+  display: block;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 4px;
+}
+.todo-container .tasks-content > span:not(:last-child) {
+  margin-bottom: 10px;
+}
+.todo-container .tasks-content .task-box {
+  display: flex;
+  align-items: center;
+
+  justify-content: space-between;
+}
+.todo-container .tasks-content .task-box .delete {
+  padding: 6px;
+  border-radius: 4px;
+  background-color: #e91e63;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.todo-container .tasks-content .task-box.completed {
+  text-decoration: line-through;
+}
+.todo-container .tasks-stat {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.todo-container .tasks-stat div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.todo-container .tasks-stat span {
+  color: white;
+  padding: 6px 10px;
+  font-size: 10px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+.todo-container .tasks-stat .tasks-count span {
+  background-color: #e91e63;
+}
+.todo-container .tasks-stat .tasks-completed span {
+  background-color: #03a9f4;
+}
