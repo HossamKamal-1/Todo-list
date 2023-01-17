@@ -6,6 +6,10 @@ let inputField = document.querySelector(".add-task input"),
   completedTasksCount = document.querySelector(".tasks-completed span"),
   tasksList = [];
 
+let noTaskSpan = document.createElement("span");
+noTaskSpan.className = "no-tasks-msg";
+noTaskSpan.appendChild(document.createTextNode("No Tasks To Show"));
+
 class Task {
   constructor(title) {
     this.title = title;
@@ -27,9 +31,6 @@ document.addEventListener("click", (e) => {
     tasksCount.innerHTML = parseInt(tasksCount.innerHTML) - 1;
     e.target.parentElement.remove();
     if (tasksContainer.innerHTML === "") {
-      let noTaskSpan = document.createElement("span");
-      noTaskSpan.className = "no-tasks-msg";
-      noTaskSpan.appendChild(document.createTextNode("No Tasks To Show"));
       tasksContainer.appendChild(noTaskSpan);
     }
   }
@@ -58,13 +59,30 @@ addBtn.onclick = () => {
   }
 };
 
+document.getElementById("clear-all").onclick = () => {
+  localStorage.clear();
+  tasksList = [];
+  completedTasksCount.innerHTML = "0";
+  tasksCount.innerHTML = "0";
+  tasksContainer.innerHTML = "";
+  tasksContainer.appendChild(noTaskSpan);
+  Swal.fire({
+    icon: "success",
+    title: "Tasks Cleared",
+    showConfirmButton: false,
+    timer: 1500,
+  });
+};
+
 function addTaskToTasksList(inputText) {
   const task = new Task(inputText);
   tasksList.push(task);
 }
+
 function addTasksToLocalStorage() {
   localStorage.setItem("tasks", JSON.stringify(tasksList));
 }
+
 function addTasksToPage() {
   tasksContainer.innerHTML = "";
   tasksList.forEach(({ title, taskId, completeState }) => {
@@ -81,6 +99,7 @@ function addTasksToPage() {
     tasksContainer.appendChild(taskBox);
   });
 }
+
 function retrieveTasksFromLocalStorage() {
   if (
     localStorage.getItem("tasks") !== null &&
@@ -94,6 +113,7 @@ function retrieveTasksFromLocalStorage() {
     ).length;
   }
 }
+
 function updateTasksList(id, option = 0) {
   // if Option value = 1 ==> remove Element
   // if Option value = 0 ==> update complete state

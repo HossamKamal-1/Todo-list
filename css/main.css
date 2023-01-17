@@ -28,6 +28,7 @@ body {
 }
 .todo-container {
   background-color: #f6f6f6;
+  padding-bottom: 1px;
 }
 .todo-container .add-task {
   padding: 15px;
@@ -124,4 +125,20 @@ body {
 }
 .todo-container .tasks-stat .tasks-completed span {
   background-color: #03a9f4;
+}
+#clear-all {
+  display: block;
+  margin: 10px auto;
+  background-color: #009688;
+  transition:  0.3s;
+  padding: 10px 15px;
+  font-weight: bold;
+  border: 0;
+  border-radius: 4px;
+  color:white;
+  cursor: pointer;
+}
+#clear-all:hover {
+  transform: scale(1.2);
+  background-color: #e91e63;
 }
