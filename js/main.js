@@ -61,46 +61,24 @@ addBtn.onclick = () => {
 };
 
 document.getElementById("finish-all").onclick = () => {
-  if (!tasksContainer.getElementsByClassName("no-tasks-msg")[0]) {
-    // Every Task completed
+  if (tasksContainer.getElementsByClassName("no-tasks-msg")[0]) {
+    fireSweetAlert("No tasks to be finished.", "Warning", "error");
+  } else {
     if (tasksList.every(({ completeState }) => completeState === true)) {
+      // Every Task completed
       fireSweetAlert("All tasks are already finished.", "Warning", "error");
     } else {
-      tasksList.forEach((task) => {
-        task.completeState = true;
-      });
-      addTasksToLocalStorage();
-      addTasksToPage();
-      completedTasksCount.innerHTML = tasksList.length;
-      fireSweetAlert("All tasks are finished.", "", "success", 1500, false);
+      finishAllTasks();
     }
-  } else {
-    fireSweetAlert("No tasks to be finished.", "Warning", "error");
   }
 };
 document.getElementById("clear-all").onclick = () => {
   if (tasksContainer.getElementsByClassName("no-tasks-msg")[0]) {
+    // No Tasks Msg Exists [ Truthy (not undefined) ]
     fireSweetAlert("No tasks to be cleared.", "Warning", "error");
   } else {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        localStorage.clear();
-        tasksList = [];
-        completedTasksCount.innerHTML = "0";
-        tasksCount.innerHTML = "0";
-        tasksContainer.innerHTML = "";
-        tasksContainer.appendChild(noTasksMsgClone);
-        fireSweetAlert("", "Tasks Cleared.", "success", 1500, false);
-      }
-    });
+    // No Tasks Msg Doesn't Exist [ Falsy (Undefined) ]
+    clearAllTasks();
   }
 };
 
@@ -169,7 +147,37 @@ function updateTasksList(id, option = 0) {
   }
   addTasksToLocalStorage();
 }
-
+function finishAllTasks() {
+  tasksList.forEach((task) => {
+    task.completeState = true;
+  });
+  addTasksToLocalStorage();
+  addTasksToPage();
+  completedTasksCount.innerHTML = tasksList.length;
+  fireSweetAlert("All tasks are finished.", "", "success", 1500, false);
+}
+function clearAllTasks() {
+  // Promise
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      localStorage.clear();
+      tasksList = [];
+      completedTasksCount.innerHTML = "0";
+      tasksCount.innerHTML = "0";
+      tasksContainer.innerHTML = "";
+      tasksContainer.appendChild(noTasksMsgClone);
+      fireSweetAlert("", "Tasks Cleared.", "success", 1500, false);
+    }
+  });
+}
 function fireSweetAlert(
   text,
   title,
