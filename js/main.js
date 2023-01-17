@@ -66,17 +66,29 @@ document.getElementById("clear-all").onclick = () => {
       title: "Warning",
     });
   } else {
-    localStorage.clear();
-    tasksList = [];
-    completedTasksCount.innerHTML = "0";
-    tasksCount.innerHTML = "0";
-    tasksContainer.innerHTML = "";
-    tasksContainer.appendChild(noTasksMsgClone);
     Swal.fire({
-      icon: "success",
-      title: "Tasks Cleared",
-      showConfirmButton: false,
-      timer: 1500,
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.clear();
+        tasksList = [];
+        completedTasksCount.innerHTML = "0";
+        tasksCount.innerHTML = "0";
+        tasksContainer.innerHTML = "";
+        tasksContainer.appendChild(noTasksMsgClone);
+        Swal.fire({
+          icon: "success",
+          title: "Tasks Cleared",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     });
   }
 };
@@ -121,11 +133,13 @@ function retrieveTasksFromLocalStorage() {
   }
 }
 
+/**
+ * Updates Tasks List. Argument 2 (option) is optional and default value is 0 , 1 means remove task.
+ * @author Hossam
+ * @param {string}  id Id of the task
+ * @param {number}  option  To delete task or update, default 0
+ */
 function updateTasksList(id, option = 0) {
-  /* 
-    [0] if Option value = 0 ==> update complete state
-    [1] if Option value = 1 ==> remove Element
-  */
   if (!option) {
     // Update Task
     let taskIndex = tasksList.findIndex(({ taskId }) => taskId == id);
