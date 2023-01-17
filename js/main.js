@@ -20,6 +20,7 @@ retrieveTasksFromLocalStorage();
 
 window.onload = () => inputField.focus();
 document.addEventListener("click", (e) => {
+  // Remove Task
   if (e.target.className === "delete") {
     updateTasksList(e.target.parentElement.dataset.id, 1);
     if (e.target.parentElement.classList.contains("completed")) {
@@ -32,6 +33,7 @@ document.addEventListener("click", (e) => {
       tasksContainer.appendChild(noTasksMsgClone);
     }
   }
+  // Finish Task
   if (e.target.classList.contains("task-box")) {
     e.target.classList.toggle("completed");
     updateTasksList(e.target.dataset.id);
@@ -50,21 +52,35 @@ addBtn.onclick = () => {
     inputField.value = "";
     tasksCount.innerHTML = parseInt(tasksCount.innerHTML) + 1;
   } else {
-    Swal.fire({
-      title: "You entered empty task.",
-      text: "Please enter a task !",
-      icon: "warning",
-    });
+    fireSweetAlert(
+      "Please enter a task !",
+      "You entered empty task.",
+      "warning"
+    );
   }
 };
 
+document.getElementById("finish-all").onclick = () => {
+  if (!tasksContainer.getElementsByClassName("no-tasks-msg")[0]) {
+    // Every Task completed
+    if (tasksList.every(({ completeState }) => completeState === true)) {
+      fireSweetAlert("All tasks are already finished.", "Warning", "error");
+    } else {
+      tasksList.forEach((task) => {
+        task.completeState = true;
+      });
+      addTasksToLocalStorage();
+      addTasksToPage();
+      completedTasksCount.innerHTML = tasksList.length;
+      fireSweetAlert("All tasks are finished.", "", "success", 1500, false);
+    }
+  } else {
+    fireSweetAlert("No tasks to be finished.", "Warning", "error");
+  }
+};
 document.getElementById("clear-all").onclick = () => {
   if (tasksContainer.getElementsByClassName("no-tasks-msg")[0]) {
-    Swal.fire({
-      icon: "error",
-      text: "No Tasks To be Cleared.",
-      title: "Warning",
-    });
+    fireSweetAlert("No tasks to be cleared.", "Warning", "error");
   } else {
     Swal.fire({
       title: "Are you sure?",
@@ -82,12 +98,7 @@ document.getElementById("clear-all").onclick = () => {
         tasksCount.innerHTML = "0";
         tasksContainer.innerHTML = "";
         tasksContainer.appendChild(noTasksMsgClone);
-        Swal.fire({
-          icon: "success",
-          title: "Tasks Cleared",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        fireSweetAlert("", "Tasks Cleared.", "success", 1500, false);
       }
     });
   }
@@ -157,4 +168,20 @@ function updateTasksList(id, option = 0) {
     tasksList = tasksList.filter(({ taskId }) => taskId != id);
   }
   addTasksToLocalStorage();
+}
+
+function fireSweetAlert(
+  text,
+  title,
+  icon,
+  timer = 0,
+  showConfirmButton = true
+) {
+  Swal.fire({
+    icon,
+    text,
+    title,
+    timer,
+    showConfirmButton,
+  });
 }

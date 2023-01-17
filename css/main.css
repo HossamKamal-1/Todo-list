@@ -126,19 +126,36 @@ body {
 .todo-container .tasks-stat .tasks-completed span {
   background-color: #03a9f4;
 }
+.options {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
 #clear-all {
-  display: block;
-  margin: 10px auto;
   background-color: #009688;
-  transition:  0.3s;
+}
+#finish-all {
+  background-color: #0d87d3b5;
+}
+#clear-all,
+#finish-all {
+  transition: 0.3s;
   padding: 10px 15px;
   font-weight: bold;
   border: 0;
   border-radius: 4px;
-  color:white;
+  color: white;
   cursor: pointer;
 }
-#clear-all:hover {
+#clear-all:hover,
+#finish-all:hover {
   transform: scale(1.2);
+}
+#clear-all:hover {
   background-color: #e91e63;
+}
+#finish-all:hover {
+  background-color: #2f019e;
 }
