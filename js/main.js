@@ -43,14 +43,18 @@ inputField.addEventListener("keypress", (e) => {
   if (e.key === "Enter") addBtn.click();
 });
 addBtn.onclick = () => {
-  if (inputField.value !== "") {
+  if (inputField.value.trim() !== "") {
     noTasksMsg.remove();
-    addTaskToTasksList(inputField.value);
+    addTaskToTasksList(inputField.value.trim());
     addTasksToLocalStorage();
     addTasksToPage();
     tasksCount.innerHTML = parseInt(tasksCount.innerHTML) + 1;
   } else {
-    Swal.fire({ title:'You entered empty task.',text: "Please enter a task !", icon: "warning" });
+    Swal.fire({
+      title: "You entered empty task.",
+      text: "Please enter a task !",
+      icon: "warning",
+    });
   }
 };
 
