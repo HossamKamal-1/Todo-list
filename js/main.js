@@ -6,9 +6,7 @@ let inputField = document.querySelector(".add-task input"),
   completedTasksCount = document.querySelector(".tasks-completed span"),
   tasksList = [];
 
-let noTaskSpan = document.createElement("span");
-noTaskSpan.className = "no-tasks-msg";
-noTaskSpan.appendChild(document.createTextNode("No Tasks To Show"));
+let noTasksMsgClone = noTasksMsg.cloneNode(true);
 
 class Task {
   constructor(title) {
@@ -31,7 +29,7 @@ document.addEventListener("click", (e) => {
     tasksCount.innerHTML = parseInt(tasksCount.innerHTML) - 1;
     e.target.parentElement.remove();
     if (tasksContainer.innerHTML === "") {
-      tasksContainer.appendChild(noTaskSpan);
+      tasksContainer.appendChild(noTasksMsgClone);
     }
   }
   if (e.target.classList.contains("task-box")) {
@@ -49,6 +47,7 @@ addBtn.onclick = () => {
     addTaskToTasksList(inputField.value.trim());
     addTasksToLocalStorage();
     addTasksToPage();
+    inputField.value = "";
     tasksCount.innerHTML = parseInt(tasksCount.innerHTML) + 1;
   } else {
     Swal.fire({
@@ -60,18 +59,26 @@ addBtn.onclick = () => {
 };
 
 document.getElementById("clear-all").onclick = () => {
-  localStorage.clear();
-  tasksList = [];
-  completedTasksCount.innerHTML = "0";
-  tasksCount.innerHTML = "0";
-  tasksContainer.innerHTML = "";
-  tasksContainer.appendChild(noTaskSpan);
-  Swal.fire({
-    icon: "success",
-    title: "Tasks Cleared",
-    showConfirmButton: false,
-    timer: 1500,
-  });
+  if (tasksContainer.getElementsByClassName("no-tasks-msg")[0]) {
+    Swal.fire({
+      icon: "error",
+      text: "No Tasks To be Cleared.",
+      title: "Warning",
+    });
+  } else {
+    localStorage.clear();
+    tasksList = [];
+    completedTasksCount.innerHTML = "0";
+    tasksCount.innerHTML = "0";
+    tasksContainer.innerHTML = "";
+    tasksContainer.appendChild(noTasksMsgClone);
+    Swal.fire({
+      icon: "success",
+      title: "Tasks Cleared",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  }
 };
 
 function addTaskToTasksList(inputText) {
@@ -115,8 +122,10 @@ function retrieveTasksFromLocalStorage() {
 }
 
 function updateTasksList(id, option = 0) {
-  // if Option value = 1 ==> remove Element
-  // if Option value = 0 ==> update complete state
+  /* 
+    [0] if Option value = 0 ==> update complete state
+    [1] if Option value = 1 ==> remove Element
+  */
   if (!option) {
     // Update Task
     let taskIndex = tasksList.findIndex(({ taskId }) => taskId == id);
