@@ -86,8 +86,8 @@ body {
 .todo-container .tasks-content .task-box {
   display: flex;
   align-items: center;
-
   justify-content: space-between;
+  cursor: pointer;
 }
 .todo-container .tasks-content .task-box .delete {
   padding: 6px;
@@ -96,10 +96,10 @@ body {
   color: white;
   font-size: 12px;
   font-weight: bold;
-  cursor: pointer;
 }
 .todo-container .tasks-content .task-box.completed {
-  text-decoration: line-through;
+  background-color: #03a9f4;
+  color: white;
 }
 .todo-container .tasks-stat {
   padding: 15px;
