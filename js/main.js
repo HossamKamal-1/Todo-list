@@ -147,6 +147,7 @@ function updateTasksList(id, option = 0) {
   }
   addTasksToLocalStorage();
 }
+
 function finishAllTasks() {
   tasksList.forEach((task) => {
     task.completeState = true;
@@ -156,6 +157,7 @@ function finishAllTasks() {
   completedTasksCount.innerHTML = tasksList.length;
   fireSweetAlert("All tasks are finished.", "", "success", 1500, false);
 }
+
 function clearAllTasks() {
   // Promise
   Swal.fire({
@@ -178,6 +180,7 @@ function clearAllTasks() {
     }
   });
 }
+
 function fireSweetAlert(
   text,
   title,
